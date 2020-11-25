@@ -57,6 +57,7 @@ once while 2,3,4 needs to be performed by each thread running on a different PE.
 There also exist functions to get PE's CMG number (**fhwb_get_pe_info** and **fhwb_get_all_pe_info**).
 
 Please see comments in [a header file](include/fujitsu_hwb.h) for information about library API.
+Also [examples](examples) folder contains some sample code.
 
 To run hardware barrier program, fujitsu hardware barrier driver needs to be loaded as
 this library uses ioctls to setup barrier registers (fhwb_sync() is different; After fhwb_assign(),
