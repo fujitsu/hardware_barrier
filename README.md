@@ -11,7 +11,7 @@ from Linux C program code.
 
 For more details about hardware barrier, see [A64FX specifiction for HPC extension](https://github.com/fujitsu/A64FX).
 
-Build & Install
+Build & Install & Test
 ----------------------
 
 This project uses cmake. To build:
@@ -26,6 +26,14 @@ For corss-compile, add -DCMAKE_C_COMPILER=\<compiler\> option to cmake command (
 To install header file(fujitsu_hwb.h) and shared library(libFJhwb.so):
 
     $ sudo make install
+
+To run test:
+
+    $ make test
+
+Note that test requires fujitsu hardware barrier driver is loaded.
+Also, in order to check barrier register's status after each test,
+parallel test run (-j) does not work.
 
 Usage
 -----

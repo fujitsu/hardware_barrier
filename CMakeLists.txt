@@ -2,6 +2,7 @@
 # Copyright 2020 FUJITSU LIMITED
 
 cmake_minimum_required(VERSION 3.11)
+enable_testing()
 include(GNUInstallDirs)
 
 set(HWBLIB_VERSION_MAJOR 0)
@@ -17,6 +18,7 @@ project(libFJhwb
 set(CMAKE_C_FLAGS "-Wall -Wextra -g -O2")
 
 add_subdirectory(src)
+add_subdirectory(tests)
 
 install(DIRECTORY include/
 	DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
