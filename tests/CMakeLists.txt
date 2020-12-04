@@ -3,40 +3,40 @@
 
 # support source
 add_executable(check_sysfs_status check_sysfs_status.c util.c)
-target_link_libraries(check_sysfs_status FJhwb)
+target_link_libraries(check_sysfs_status ${HWBLIB})
 
 # test source
 add_executable(test_init_fini test_init_fini.c util.c)
-target_link_libraries(test_init_fini FJhwb)
+target_link_libraries(test_init_fini ${HWBLIB})
 add_executable(test_call_init_num_bb_times test_call_init_num_bb_times.c util.c)
-target_link_libraries(test_call_init_num_bb_times FJhwb)
+target_link_libraries(test_call_init_num_bb_times ${HWBLIB})
 add_executable(test_init_fini_error test_init_fini_error.c util.c)
-target_link_libraries(test_init_fini_error FJhwb)
+target_link_libraries(test_init_fini_error ${HWBLIB})
 
 add_executable(test_assign_unassign test_assign_unassign.c util.c)
-target_link_libraries(test_assign_unassign FJhwb pthread)
+target_link_libraries(test_assign_unassign ${HWBLIB} pthread)
 add_executable(test_call_assign_num_bw_times test_call_assign_num_bw_times.c util.c)
-target_link_libraries(test_call_assign_num_bw_times FJhwb)
+target_link_libraries(test_call_assign_num_bw_times ${HWBLIB})
 add_executable(test_assign_unassign_error test_assign_unassign_error.c util.c)
-target_link_libraries(test_assign_unassign_error FJhwb)
+target_link_libraries(test_assign_unassign_error ${HWBLIB})
 
 add_executable(test_exit_program_without_cleanup test_exit_program_without_cleanup.c util.c)
-target_link_libraries(test_exit_program_without_cleanup FJhwb pthread)
+target_link_libraries(test_exit_program_without_cleanup ${HWBLIB} pthread)
 
 add_executable(test_illegal_sync test_illegal_sync.c)
-target_link_libraries(test_illegal_sync FJhwb)
+target_link_libraries(test_illegal_sync ${HWBLIB})
 
 add_executable(test_get_pe_info test_get_pe_info.c)
-target_link_libraries(test_get_pe_info FJhwb)
+target_link_libraries(test_get_pe_info ${HWBLIB})
 add_executable(test_get_all_pe_info test_get_all_pe_info.c)
-target_link_libraries(test_get_all_pe_info FJhwb)
+target_link_libraries(test_get_all_pe_info ${HWBLIB})
 
 add_executable(test_sync_1cmg test_sync_1cmg.c util.c)
-target_link_libraries(test_sync_1cmg FJhwb pthread)
+target_link_libraries(test_sync_1cmg ${HWBLIB} pthread)
 add_executable(test_sync_1cmg_error test_sync_1cmg_error.c util.c)
-target_link_libraries(test_sync_1cmg_error FJhwb pthread)
+target_link_libraries(test_sync_1cmg_error ${HWBLIB} pthread)
 add_executable(test_sync_all_bb_all_bw test_sync_all_bb_all_bw.c util.c)
-target_link_libraries(test_sync_all_bb_all_bw FJhwb pthread)
+target_link_libraries(test_sync_all_bb_all_bw ${HWBLIB} pthread)
 
 ### basic function test
 add_test(NAME init/fini COMMAND $<TARGET_FILE:test_init_fini>)

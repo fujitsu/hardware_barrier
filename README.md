@@ -23,7 +23,10 @@ This project uses cmake. To build:
 
 For corss-compile, add -DCMAKE_C_COMPILER=\<compiler\> option to cmake command (before "..").
 
-To install header file(fujitsu_hwb.h) and shared library(libFJhwb.so):
+If you want to build a static library too, add -DBUILD_STATIC_LIBRARY=ON.
+Also if you want to build tests/examples with static library, add -DBUILD_STATIC=ON (requires glibc-static).
+
+To install header file(fujitsu_hwb.h) and library(libFJhwb.so/libFJhwb-static.a):
 
     $ sudo make install
 

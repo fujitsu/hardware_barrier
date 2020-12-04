@@ -15,11 +15,26 @@ project(libFJhwb
 	DESCRIPTION "FUJITSU HARDWARE BARRIER LIBRARY"
 	LANGUAGES C)
 
+option(BUILD_STATIC_LIB "build static library" OFF)
+option(BUILD_STATIC "build tests/examples with static library" OFF)
+option(BUILD_TESTS "build tests" ON)
+option(BUILD_EXAMPLES "build examples" ON)
+
 set(CMAKE_C_FLAGS "-Wall -Wextra -g -O2")
+set(HWBLIB "FJhwb")
 
 add_subdirectory(src)
-add_subdirectory(tests)
-add_subdirectory(examples)
+
+if (BUILD_STATIC)
+	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -static")
+	set(HWBLIB "FJhwb-static")
+endif()
+if (BUILD_TESTS)
+	add_subdirectory(tests)
+endif()
+if (BUILD_EXAMPLES)
+	add_subdirectory(examples)
+endif()
 
 install(DIRECTORY include/
 	DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
