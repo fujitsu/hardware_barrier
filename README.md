@@ -71,6 +71,9 @@ the library manages open/close of the device file.
 Although user applications should free allocated barrier resources by fhwb_unassign()/fhwb_fini() after use,
 the driver performs cleanup if remaining resources exist upon file close (process exit).
 
+Note that barrier driver provides sysfs interface to show current status of barrier
+resources for debug. See [sysfs_interface.md](sysfs_interface.md).
+
 License
 -------
 LGPLv3
