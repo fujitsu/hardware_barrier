@@ -6,3 +6,6 @@ target_link_libraries(list_all_pe_info ${HWBLIB})
 
 add_executable(sync_1cmg sync_1cmg.c)
 target_link_libraries(sync_1cmg ${HWBLIB} pthread)
+
+add_executable(measure_sync_time measure_sync_time.c)
+target_link_libraries(measure_sync_time ${HWBLIB} pthread)
