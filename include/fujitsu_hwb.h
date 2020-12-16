@@ -34,15 +34,19 @@ struct fhwb_pe_info {
 };
 
 /**
- * Allocate barrier blade in @pemask's CMG and initialize its mask with @pemask.
+ * Allocate barrier blade (bb) in @pemask's CMG and initialize its mask with @pemask.
  * Since hardware barrier can be used by PEs of the same CMG, PE in @pemask
  * must belong to the same CMG.
  *
  * @param[in] pemask_size size of @pemask in bytes
  * @param[in] pemask cpumask of PEs joining synchronization
  *
- * @return 0>= barrier descriptor which will be used in subsequent functions
- *         <0 -errno
+ * @return 0>= barrier descriptor (bd) which will be used in subsequent functions
+ *         <0 error
+ *            -ENOMEM ... failed to allocate memory
+ *            -EFAULT ... failed to copy from/to kernel space
+ *            -EBUSY  ... all barrier blade in the CMG is currently used
+ *            -EINVAL ... value of @pemask is invalid (some PE belongs to the different CMG etc.)
  */
 int fhwb_init(size_t pemask_size, cpu_set_t *pemask);
 
@@ -52,12 +56,15 @@ int fhwb_init(size_t pemask_size, cpu_set_t *pemask);
  * @param[in] bd barrier descriptor returned by fhwb_init()
  *
  * @return 0 success
- *        <0 -errno
+ *        <0 error
+ *           -EPERM  ... the bb is being freed
+ *           -EFAULT ... failed to copy from/to kernel space
+ *           -EINVAL ... @bd is invalid
  */
 int fhwb_fini(int bd);
 
 /**
- * Allocate barrier window and initialize it with given @bd.
+ * Allocate barrier window (bw) and initialize it with given @bd.
  *
  * Barrier window is per PE resource and therefore this function needs to be called
  * once on each PE joining synchronization. The caller thread must be bound to one PE.
@@ -67,7 +74,14 @@ int fhwb_fini(int bd);
  *            unallocated window will be automatically chosen.
  *
  * @return 0>= window number to be used
- *         <0 -errno
+ *         <0 error
+ *            -EPERM  ... the bb is being freed
+ *            -EPERM  ... caller is not bound to one PE
+ *            -EFAULT ... failed to copy from/to kernel space
+ *            -EBUSY  ... all barrier window or specified barrier window is currently used
+ *            -EINVAL ... @bd or @window is invalid
+ *            -EINVAL ... the PE is already assigned to a barrier window
+ *            -EINVAL ... the PE is not supposed to join synchronization
  */
 int fhwb_assign(int bd, int window);
 
@@ -80,7 +94,12 @@ int fhwb_assign(int bd, int window);
  * @param[in] bd barrier descriptor returned by fhwb_init()
  *
  * @return 0 success
- *        <0 -errno
+ *        <0 error
+ *           -EPERM  ... the bb is being freed
+ *           -EPERM  ... caller is not bound to one PE
+ *           -EFAULT ... failed to copy from/to kernel space
+ *           -EINVAL ... @bd is invalid
+ *           -EINVAL ... the PE is not assigned to a window
  */
 int fhwb_unassign(int bd);
 
@@ -104,7 +123,9 @@ void fhwb_sync(int window);
  * @param[out] info CMG/Physical PE number of running PE
  *
  * @return 0 success
- *        <0 -errno
+ *        <0 error
+ *           -EFAULT ... failed to copy from kernel space
+ *           -EINVAL ... @info is NULL
  */
 int fhwb_get_pe_info(struct fhwb_pe_info *info);
 
@@ -122,7 +143,10 @@ int fhwb_get_pe_info(struct fhwb_pe_info *info);
  * @param[out] entry_num entry size of @list
  *
  * @return 0 success
- *        <0 -errno
+ *        <0 error
+ *           -ENOMEM ... failed to allocate memory
+ *           -EFAULT ... failed to copy from kernel space
+ *           -EINVAL ... @list or @entry_num is NULL
  */
 int fhwb_get_all_pe_info(struct fhwb_pe_info **list, int *entry_num);
 
