@@ -68,14 +68,17 @@ int main()
 	ret = fhwb_assign(bd, 0);
 	ASSERT_FAIL(ret);
 
-	printf("test3: check fhwb_assign fails for unallocated bd\n");
+	printf("test3: check fhwb_assign fails for unallocated/invalid bd\n");
 	/* bind to PE which joins synchronization */
 	CPU_ZERO(&set);
 	CPU_SET(cpu, &set);
 	ret = sched_setaffinity(0, sizeof(cpu_set_t), &set);
 	ASSERT_SUCCESS(ret);
 
-	ret = fhwb_assign(bd2+1 /* invalid value */, 0);
+	ret = fhwb_assign(bd2+1 /* unallocated bd vaue */, 0);
+	ASSERT_FAIL(ret);
+
+	ret = fhwb_assign(100 /* invalid bd value */, 0);
 	ASSERT_FAIL(ret);
 
 	printf("test4: check fhwb_assign fails for already used window number\n");
@@ -116,8 +119,11 @@ int main()
 	ret = fhwb_unassign(bd);
 	ASSERT_FAIL(ret);
 
-	printf("test9: check fhwb_unassign fails for unallocated bd\n");
-	ret = fhwb_unassign(bd2+1 /* invalid value */);
+	printf("test9: check fhwb_unassign fails for unallocated/invalid bd\n");
+	ret = fhwb_unassign(bd2+1 /* unallocated bd value */);
+	ASSERT_FAIL(ret);
+
+	ret = fhwb_unassign(100 /* invalid bd value */);
 	ASSERT_FAIL(ret);
 
 	/* cleanup */
