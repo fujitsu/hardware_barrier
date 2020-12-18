@@ -38,6 +38,8 @@ target_link_libraries(test_get_all_pe_info_error ${HWBLIB})
 
 add_executable(test_illegal_sync test_illegal_sync.c util.c)
 target_link_libraries(test_illegal_sync ${HWBLIB})
+add_executable(test_bb_ownership test_bb_ownership.c util.c)
+target_link_libraries(test_bb_ownership ${HWBLIB})
 
 ## for cleanup test
 add_executable(test_exit_program_without_cleanup test_exit_program_without_cleanup.c util.c)
@@ -69,6 +71,7 @@ add_test(NAME call_assign_num_bw_times COMMAND $<TARGET_FILE:test_call_assign_nu
 add_test(NAME get_pe_info_error COMMAND $<TARGET_FILE:test_get_pe_info_error>)
 add_test(NAME get_all_pe_info_error COMMAND $<TARGET_FILE:test_get_all_pe_info_error>)
 add_test(NAME illegal_sync COMMAND $<TARGET_FILE:test_illegal_sync>)
+add_test(NAME bb_ownership COMMAND $<TARGET_FILE:test_bb_ownership>)
 
 ## cleanup test
 find_program (BASH bash)
