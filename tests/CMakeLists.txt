@@ -15,9 +15,9 @@ target_link_libraries(test_init_fini ${HWBLIB})
 add_executable(test_assign_unassign test_assign_unassign.c util.c)
 target_link_libraries(test_assign_unassign ${HWBLIB} pthread)
 
-add_executable(test_get_pe_info test_get_pe_info.c)
+add_executable(test_get_pe_info test_get_pe_info.c util.c)
 target_link_libraries(test_get_pe_info ${HWBLIB})
-add_executable(test_get_all_pe_info test_get_all_pe_info.c)
+add_executable(test_get_all_pe_info test_get_all_pe_info.c util.c)
 target_link_libraries(test_get_all_pe_info ${HWBLIB})
 
 ## for error case test
@@ -31,12 +31,12 @@ target_link_libraries(test_call_assign_num_bw_times ${HWBLIB})
 add_executable(test_assign_unassign_error test_assign_unassign_error.c util.c)
 target_link_libraries(test_assign_unassign_error ${HWBLIB})
 
-add_executable(test_get_pe_info_error test_get_pe_info_error.c)
+add_executable(test_get_pe_info_error test_get_pe_info_error.c util.c)
 target_link_libraries(test_get_pe_info_error ${HWBLIB})
-add_executable(test_get_all_pe_info_error test_get_all_pe_info_error.c)
+add_executable(test_get_all_pe_info_error test_get_all_pe_info_error.c util.c)
 target_link_libraries(test_get_all_pe_info_error ${HWBLIB})
 
-add_executable(test_illegal_sync test_illegal_sync.c)
+add_executable(test_illegal_sync test_illegal_sync.c util.c)
 target_link_libraries(test_illegal_sync ${HWBLIB})
 
 ## for cleanup test

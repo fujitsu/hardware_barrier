@@ -6,6 +6,7 @@
  */
 
 #include <fujitsu_hwb.h>
+#include "util.h"
 
 #include <stdio.h>
 
@@ -15,10 +16,7 @@ int main()
 
 	printf("test1: check fhwb_get_pe_info fails with NULL argument\n");
 	ret = fhwb_get_pe_info(NULL);
-	if (!ret) {
-		fprintf(stderr, "fhwb_get_pe_info should return error with NULL arg\n");
-		return -1;
-	}
+	ASSERT_FAIL(ret);
 
 	return 0;
 }

@@ -24,14 +24,12 @@ int main()
 	int i;
 
 	ret = get_hwb_hwinfo(&hwinfo);
-	if (ret)
-		return -1;
+	ASSERT_SUCCESS(ret);
 
 	printf("test1: check init/fini by all PEs works in each CMG\n");
 	for (i = 0; i < hwinfo.num_cmg; i++) {
 		ret = fill_cpumask_for_cmg(i, &set);
-		if (ret)
-			return -1;
+		ASSERT_SUCCESS(ret);
 
 		printf("CMG: %d, CPU_COUNT: %d\n", i, CPU_COUNT(&set));
 		if (CPU_COUNT(&set) < 2) {
@@ -40,25 +38,21 @@ int main()
 		}
 
 		ret = fhwb_init(sizeof(cpu_set_t), &set);
-		if (ret < 0)
-			return -1;
+		ASSERT_VALID_BD(ret);
 		bd = ret;
 
 		ret = fhwb_fini(bd);
-		if (ret < 0)
-			return -1;
+		ASSERT_SUCCESS(ret);
 
 		/* in the end, sysfs entries should be clean */
 		ret = check_sysfs_status();
-		if (ret < 0)
-			return -1;
+		ASSERT_SUCCESS(ret);
 	}
 
 	printf("test2: check init/fini by 2 PEs works in each CMG\n");
 	for (i = 0; i < hwinfo.num_cmg; i++) {
 		ret = fill_cpumask_for_cmg(i, &temp);
-		if (ret)
-			return -1;
+		ASSERT_SUCCESS(ret);
 
 		/* Pick 2 cpus in this CMG */
 		CPU_ZERO(&set);
@@ -72,18 +66,15 @@ int main()
 		}
 
 		ret = fhwb_init(sizeof(cpu_set_t), &set);
-		if (ret < 0)
-			return -1;
+		ASSERT_VALID_BD(ret);
 		bd = ret;
 
 		ret = fhwb_fini(bd);
-		if (ret < 0)
-			return -1;
+		ASSERT_SUCCESS(ret);
 
 		/* in the end, sysfs entries should be clean */
 		ret = check_sysfs_status();
-		if (ret < 0)
-			return -1;
+		ASSERT_SUCCESS(ret);
 	}
 
 	return 0;

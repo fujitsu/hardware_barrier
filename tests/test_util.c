@@ -19,7 +19,7 @@ void test_get_hwb_hwinfo()
 	int ret;
 
 	ret = get_hwb_hwinfo(&hwinfo);
-	ASSERT(ret == 0);
+	ASSERT_SUCCESS(ret);
 	/* Assume we can get valid (non-zero) numbers */
 	ASSERT(hwinfo.num_cmg != 0);
 	ASSERT(hwinfo.num_bb != 0);
@@ -35,7 +35,7 @@ void test_fill_cpumask_for_cmg()
 	CPU_ZERO(&set);
 	/* Assume there are some online cpus in CMG 0 */
 	ret = fill_cpumask_for_cmg(0, &set);
-	ASSERT(ret == 0);
+	ASSERT_SUCCESS(ret);
 	ASSERT(CPU_COUNT(&set) != 0);
 }
 
@@ -69,26 +69,25 @@ void test_check_sysfs_status()
 
 	/* at first it should be clean */
 	ret = check_sysfs_status();
-	ASSERT(ret == 0);
+	ASSERT_SUCCESS(ret);
 
 	/* allocate BB and check status is not clean */
 	ret = fill_cpumask_for_cmg(0, &set);
-	ASSERT(ret == 0);
+	ASSERT_SUCCESS(ret);
 	bd = fhwb_init(sizeof(cpu_set_t), &set);
-	ASSERT(bd >= 0);
+	ASSERT_VALID_BD(bd);
 	ret = check_sysfs_status();
-	ASSERT(ret != 0);
+	ASSERT_FAIL(ret);
 
 	/* free BB and check status is clean */
 	ret = fhwb_fini(bd);
-	ASSERT(ret == 0);
+	ASSERT_SUCCESS(ret);
 	ret = check_sysfs_status();
-	ASSERT(ret == 0);
+	ASSERT_SUCCESS(ret);
 }
 
 int main()
 {
-
 	printf("test1 get_hwb_hwinfo\n");
 	test_get_hwb_hwinfo();
 

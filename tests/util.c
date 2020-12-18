@@ -269,7 +269,10 @@ int check_sysfs_status()
 out:
 	free(buf);
 
-	return ret;
+	if (ret)
+		return -1;
+
+	return 0;
 }
 
 int fill_cpumask_for_cmg(int cmg, cpu_set_t *mask)

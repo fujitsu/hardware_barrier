@@ -6,6 +6,7 @@
  */
 
 #include <fujitsu_hwb.h>
+#include "util.h"
 
 #include <signal.h>
 #include <stdio.h>
@@ -28,10 +29,7 @@ int main()
 	printf("test1: check fhwb_sync without assign invoke SIGILL\n");
 	sa.sa_handler = sigill_handler;
 	ret = sigaction(SIGILL, &sa, NULL);
-	if (ret) {
-		perror("sigaction");
-		return -1;
-	}
+	ASSERT_SUCCESS(ret);
 
 	fhwb_sync(0);
 

@@ -16,6 +16,11 @@
 	} \
 } while(0)
 
+#define ASSERT_SUCCESS(ret)  ASSERT((ret == 0))
+#define ASSERT_FAIL(ret)     ASSERT((ret < 0))
+#define ASSERT_VALID_BD(ret) ASSERT((ret >= 0))
+#define ASSERT_VALID_BW(ret) ASSERT((ret >= 0) && (ret < hwinfo.num_bw))
+
 struct hwb_hwinfo {
 	int num_cmg;
 	int num_bb;

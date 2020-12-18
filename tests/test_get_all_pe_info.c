@@ -6,6 +6,7 @@
  */
 
 #include <fujitsu_hwb.h>
+#include "util.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -20,8 +21,7 @@ int main()
 
 	printf("test1: check fhwb_get_all_pe_info\n");
 	ret = fhwb_get_all_pe_info(&info, &entry_num);
-	if (ret)
-		return -1;
+	ASSERT_SUCCESS(ret);
 
 	valid_info = 0;
 	for (i = 0; i < entry_num; i++) {

@@ -6,6 +6,7 @@
  */
 
 #include <fujitsu_hwb.h>
+#include "util.h"
 
 #include <stdio.h>
 #include <string.h>
@@ -19,8 +20,7 @@ int main()
 	/* fill invalid value */
 	memset(&info, 0xFF, sizeof(info));
 	ret = fhwb_get_pe_info(&info);
-	if (ret)
-		return -1;
+	ASSERT_SUCCESS(ret);
 
 	if (info.cmg == FHWB_INVALID_CMG || info.physical_pe == FHWB_INVALID_PPE) {
 		fprintf(stderr, "fhwb_get_pe_info returns invalid CMG/PE number: %d/%d\n",
