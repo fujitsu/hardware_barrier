@@ -18,14 +18,7 @@ int main()
 	int ret;
 	int i;
 
-	printf("test1: check fhwb_get_all_pe_info fails with NULL argument\n");
-	ret = fhwb_get_all_pe_info(NULL, NULL);
-	if (!ret) {
-		fprintf(stderr, "fhwb_get_pe_info should return error with NULL arg\n");
-		return -1;
-	}
-
-	printf("test2: check fhwb_get_all_pe_info\n");
+	printf("test1: check fhwb_get_all_pe_info\n");
 	ret = fhwb_get_all_pe_info(&info, &entry_num);
 	if (ret)
 		return -1;
@@ -50,6 +43,7 @@ int main()
 		fprintf(stderr, "fhwb_get_all_pe_info should return with at lest 1 valid entry\n");
 		return -1;
 	}
+	printf("get %d valid entries\n", valid_info);
 
 	return 0;
 }

@@ -2,7 +2,7 @@
 /*
  * Copyright 2020 FUJITSU LIMITED
  *
- * Test error path of assign/unassign
+ * Error route test for fhwb_assign/fhwb_unassign
  */
 
 #define _GNU_SOURCE

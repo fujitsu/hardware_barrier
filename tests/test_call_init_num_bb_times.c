@@ -22,11 +22,11 @@ int main()
 	int bd[128];
 	int i;
 
-	printf("test1: check fhwb_init fails at (num_bb + 1)\n");
 	ret = get_hwb_hwinfo(&hwinfo);
 	if (ret)
 		return -1;
 
+	printf("test1: check fhwb_init fails at (num_bb + 1)\n");
 	/* use CMG 0 */
 	ret = fill_cpumask_for_cmg(0, &set);
 	if (ret)

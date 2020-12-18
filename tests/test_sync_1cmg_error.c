@@ -2,8 +2,8 @@
 /*
  * Copyright 2020 FUJITSU LIMITED
  *
- * Basically the same as the test_sync_1cmg but some
- * threads call fhwb_fini during operation and then exit the probram
+ * Basically the same as the test_sync_1cmg.c but some
+ * threads call fhwb_fini during operation and then exit the program
  *
  * Usage: ./a.out <cmg_num> <loop_num>
  */

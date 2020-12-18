@@ -2,9 +2,10 @@
 /*
  * Copyright 2020 FUJITSU LIMITED
  *
- * Exit program without proper cleanup (unassign/fini) after init/assign.
- * Even user program does not perfrom proper cleanup, kernel driver should
- * perform cleanup upon file close.
+ * Allocate 2 BB in CMG 0 and then exit program without proper cleanup
+ * (i.e. unassign/fini) after init/assign.
+ * Even user program does not perform proper cleanup, kernel driver should
+ * perform cleanup upon process exit (file close).
  *
  * Usage: ./a.out 0|1 (call fhwb_fini if 1)
  */
@@ -24,7 +25,7 @@
 #include <sys/types.h>
 #include <unistd.h>
 
-static int _bd;
+static int _bd0, _bd1;
 struct thread_info {
 	pthread_t thread_id;
 	int cpuid;
@@ -35,6 +36,7 @@ static void *worker(void * arg)
 {
 	struct thread_info *info = (struct thread_info *)arg;
 	cpu_set_t set;
+	int w0, w1;
 	int ret;
 	int cmg;
 	int bb;
@@ -49,13 +51,29 @@ static void *worker(void * arg)
 		pthread_exit(NULL);
 	}
 
-	cmg = fhwb_get_cmg_from_bd(_bd);
-	bb = fhwb_get_bb_from_bd(_bd);
+	cmg = fhwb_get_cmg_from_bd(_bd0);
+	bb = fhwb_get_bb_from_bd(_bd0);
 	printf("thread %ld, cmg: %d, bb: %d, cpuid: %d\n", info->thread_id, cmg, bb, info->cpuid);
 
-	/* just do assign and exit */
-	ret = fhwb_assign(_bd, -1);
+	/* check everything works correctly */
+	ret = fhwb_assign(_bd0, -1);
+	if (ret < 0)
+		goto out;
+	w0 = ret;
+	ret = fhwb_assign(_bd1, -1);
+	if (ret < 0)
+		goto out;
+	w1 = ret;
 
+	fhwb_sync(w0);
+	fhwb_sync(w1);
+	fhwb_sync(w1);
+	fhwb_sync(w0);
+
+	/* exit without fhwb_unassign */
+	ret = 0;
+
+out:
 	info->ret = ret;
 	pthread_exit(NULL);
 }
@@ -98,11 +116,16 @@ int main(int argc, char *argv[])
 		return -1;
 	}
 
-	/* initialize MASK */
+	/* Allocate 2 BB */
 	ret = fhwb_init(sizeof(cpu_set_t), &set);
 	if (ret < 0)
 		goto out;
-	_bd = ret;
+	_bd0 = ret;
+
+	ret = fhwb_init(sizeof(cpu_set_t), &set);
+	if (ret < 0)
+		goto out;
+	_bd1 = ret;
 
 	/* create threads and wait they finish */
 	cpu = -1;
@@ -142,7 +165,12 @@ int main(int argc, char *argv[])
 
 
 	if (call_fini) {
-		ret = fhwb_fini(_bd);
+		/* check order of fhwb_init does not mater */
+		ret = fhwb_fini(_bd1);
+		if (ret)
+			goto out;
+
+		ret = fhwb_fini(_bd0);
 		if (ret)
 			goto out;
 

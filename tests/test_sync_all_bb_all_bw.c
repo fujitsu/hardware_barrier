@@ -3,7 +3,7 @@
  * Copyright 2020 FUJITSU LIMITED
  *
  * Perform assign/sync/unassign in loop using all BB and BW in a specified CMG.
- * This program assumes A64FX has 6 BB per CMG and 4 BW per PE.
+ * This program assumes 6 BB per CMG and 4 BW per PE (A64FX).
  *
  * Usage: ./a.out <cmg_num> <loop_num>
  */

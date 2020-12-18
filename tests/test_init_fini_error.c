@@ -2,7 +2,7 @@
 /*
  * Copyright 2020 FUJITSU LIMITED
  *
- * Test fhwb_init succeeds num_bb times and fails at (num_bb + 1)
+ * Error route test for fhwb_init/fhwb_fini
  */
 
 #define _GNU_SOURCE
