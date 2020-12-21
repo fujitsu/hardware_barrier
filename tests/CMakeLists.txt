@@ -25,6 +25,8 @@ add_executable(test_call_init_num_bb_times test_call_init_num_bb_times.c util.c)
 target_link_libraries(test_call_init_num_bb_times ${HWBLIB})
 add_executable(test_init_fini_error test_init_fini_error.c util.c)
 target_link_libraries(test_init_fini_error ${HWBLIB})
+add_executable(test_init_offline_cpu_error test_init_offline_cpu_error.c util.c)
+target_link_libraries(test_init_offline_cpu_error ${HWBLIB})
 
 add_executable(test_call_assign_num_bw_times test_call_assign_num_bw_times.c util.c)
 target_link_libraries(test_call_assign_num_bw_times ${HWBLIB})
@@ -65,6 +67,8 @@ add_test(NAME get_all_pe_info COMMAND $<TARGET_FILE:test_get_all_pe_info>)
 
 ## error case test
 add_test(NAME init_fini_error COMMAND $<TARGET_FILE:test_init_fini_error>)
+add_test(NAME init_offline_cpu_error COMMAND $<TARGET_FILE:test_init_offline_cpu_error>)
+set_tests_properties(init_offline_cpu_error PROPERTIES SKIP_RETURN_CODE 77)
 add_test(NAME call_init_num_bb_times COMMAND $<TARGET_FILE:test_call_init_num_bb_times>)
 add_test(NAME assign_unassign_error COMMAND $<TARGET_FILE:test_assign_unassign_error>)
 add_test(NAME call_assign_num_bw_times COMMAND $<TARGET_FILE:test_call_assign_num_bw_times>)
