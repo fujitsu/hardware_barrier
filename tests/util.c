@@ -260,10 +260,14 @@ int check_sysfs_status()
 	for (i = 0; i < hwinfo.num_cmg; i++)
 		ret |= check_used_bw_bmap(i);
 
-	for (i = 0; i < hwinfo.num_cmg; i++) {
-		for (j = 0; j < hwinfo.num_bb; j++) {
-			ret |= check_init_sync(i, j, buf);
+	if (getuid() == 0) {
+		for (i = 0; i < hwinfo.num_cmg; i++) {
+			for (j = 0; j < hwinfo.num_bb; j++) {
+				ret |= check_init_sync(i, j, buf);
+			}
 		}
+	} else {
+		printf("skip check_init_sync() as it requires root privilege\n");
 	}
 
 out:
